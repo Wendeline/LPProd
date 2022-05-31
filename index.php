@@ -1,6 +1,8 @@
 <?php
 session_start();
 $_SESSION['idUtilisateur'] = 'Null';
+
+include('mylib.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,19 +54,89 @@ $_SESSION['idUtilisateur'] = 'Null';
   <h1>Notre catalogue</h1>
 
     <?php
-        include('mylib.php');
 
-        $req = "SELECT titre from serie";
+        $req = "SELECT * from serie";
         $repBdd = $bdd->prepare($req);
         $repBdd->execute();
         $result = $repBdd->fetchAll();
         $repBdd->closeCursor();
 
-        for ($i = 0; $i <= count($result)-1; $i++){
-            echo($result[$i]['titre']."<br>");
+        
+        if($_SESSION['idUtilisateur'] != 'Null'){
+          // recommandation bateau on affiche juste les séries qu'il n'a pas vu
+          // Dans une futur version on peut afficher les séries en fonction de leur popularité
+          $SeriesNonVu = "select * from serie where idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = $_SESSION['idUtilisateur']);";
+          $repNonVU = $bdd->prepare($SeriesNonVu);
+          $repNonVU->execute();
+          $resultNonVu = $repNonVU->fetchAll();
+          $repNonVU->closeCursor();
+
+          for ($i = 0; $i <= count($resultNonVu)-1; $i++){
+            echo($resultNonVu[$i]['titre']);
+            ?>
+            <form action="SaveLike.php" method="post">
+            <select name="Aime"> 
+            <option type="submit" name="submit" value="1">J'aime</option>
+            <option type="submit" name="submit" value="0">Je n'aime pas</option>
+            <?php
+          }
+
+        }else{
+          for ($i = 0; $i <= count($result)-1; $i++){
+            echo($result[$i]['titre'].'<br>');
+          }
+            
+        }
+      
+  if($_SESSION['idUtilisateur'] != 'Null'){    
+    ?>
+
+    <h1> Pour vous </h1> <!-- Ici on lui affiche les séries qu'on lui recommande en fonction de celles qu'il a aimé ou non -->
+
+    <?php
+      $reco = "select sum(nbmots) , idSerie
+      from posseder p
+      where idmot in (select p1.idmot
+      from posseder p1, posseder p2
+      where p1.idmot = p2.idmot
+      and p1.idSerie in(select idSerie from regarder where aime = 1 and idUtilisateur = $_SESSION['idUtilisateur'])
+      and p2.idSerie in (select idSerie from regarder where aime = 0 and idUtilisateur = $_SESSION['idUtilisateur'])
+      group by p1.idmot
+      having sum(p1.nbmots) > sum(p2.nbmots))
+      group by idSerie
+      order by 1 desc, 2 asc";
+      $repReco = $bdd->prepare($reco);
+      $repReco->execute();
+      $resultReco = $repReco->fetchAll();
+      $repReco->closeCursor();
+
+      $sugest = "select titre from serie where idSerie in (resultReco) and idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = $_SESSION['idUtilisateur'])";
+      $repSugest = $bdd->prepare($sugest);
+      $repSugest->execute();
+      $resultSugest = $repSugest->fetchAll();
+      $repSugest->closeCursor();
+
+      for ($i = 0; $i <= count($resultSugest)-1; $i++){
+        echo($resultSugest[$i]['titre'].'<br>');
+      }
+
+      ?>
+      <h1> À revoir </h1> <!-- Ici on lui affiche les séries qu'il a déjà vu parce qu'il pourrait avoir envie de les revoir
+
+      <?php
+        $reco = "select titre from serie s, regarder r where s.idSerie = r.idSerie and vu = 1 and idUtilisateur = $_SESSION['idUtilisateur']";
+        $repReco = $bdd->prepare($reco);
+        $repReco->execute();
+        $resultReco = $repReco->fetchAll();
+        $repReco->closeCursor();
+  
+        for ($i = 0; $i <= count($resultReco)-1; $i++){
+          echo($resultSugest[$i]['titre'].'<br>');
         }
 
-    ?>
+  }
+
+  ?>
 
 </div>
 
