@@ -2,14 +2,25 @@
 <?php
 session_start();
 
-if(isset($_POST['submit'])){
-$aime = $_POST['Aime'];
+if(isset($_GET['submit'])){
+    $aime = $_GET['Aime'];
+    $idSerie = $GET['idSerie'];
+}
 
-// sur l'index on lui a affiché les séries et tout mais maintenant faut qu'il puisse nos aidés à le recomander en sauvant ses goûts 
-// j'ai la flemme je le ferai demain 
+$dejaVu = "select * from regarder where idSerie = $idSerie and idUtilisateur = $_SESSION['idUtilisateur']";
+$repVu = $bdd->prepare($dejaVu);
+$repVu->execute();
+$Vu = $repVu->fetch();
+$repVu->closeCursor();
 
-// Traitement de si la personne aime 1 ou non 0
-// + sauvegarde que la série à été vu
-
+    if ((empty($Vu['vu']))){
+        $query = "INSERT INTO `regarder`(idSerie, idUtilisateur, vu, aime) VALUES ($idSerie, $_SESSION['idUtilisateur'], 1, $aime)";
+        $repBdd = $bdd->prepare($query);
+        $repBdd->execute();
+        
+    }else{
+        $query = "UPDATE `regarder` set vu = 1 and aime = $aime where idSerie=$idSerie and idUtilisateur = $_SESSION['idUtilisateur'])";
+        $repBdd = $bdd->prepare($query);
+        $repBdd->execute();
 }
 ?>
