@@ -2,7 +2,7 @@
 session_start();
 // On inclus la connexion à la base de données
 include('mylib.php');
-include('pythonFonctions.py');
+//include('pythonFonctions.py');
 
 $accents  = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ');
 $SansAccents = array('A', 'A', 'A', 'A', 'A', 'A', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y');
@@ -21,7 +21,10 @@ for ($i = 1; $i <= count($Alemme)-1; $i++) {
     $string = $string . ",'".$Alemme[$i]."'";
 }
 $string = $string . "]";
-exec('python pythonFonctions.py ' . $string , $Splitmots);
+$comand = 'C:\wamp64\www\LPProd\pythonFonctions.py';
+$python = 'C:\Users\Wendy\AppData\Local\Microsoft\WindowsApps\python.exe';
+exec("$python $comand $string", $Splitmots);
+//exec('python pythonFonctions.py ' . $string , $Splitmots); 
 var_dump($Splitmots);
 // On instancie une string dans laquelle nous mettrons les mots recherchés selon un certain paterne 
 $SearchWord = "'".$Splitmots[0]."'";
