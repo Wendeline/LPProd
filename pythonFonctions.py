@@ -1,11 +1,10 @@
 import pysrt, spacy.cli
 
-
 def lemmeWords(Splitmots):
     motLemme = []
     fr_content_dict = dict()
 
-    content_vf = "\n".join(Splitmots)
+    content_vf = " ".join(Splitmots)
     fr_pipeline = "fr_core_news_sm"
     dis = ["parser", "ner"]
     spacy.cli.download(fr_pipeline)

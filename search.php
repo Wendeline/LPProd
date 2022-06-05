@@ -1,8 +1,9 @@
 <?php
 session_start();
 // On inclus la connexion à la base de données
-include('connexion.php');
+include('mylib.php');
 include('pythonFonctions.py');
+
 $accents  = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ');
 $SansAccents = array('A', 'A', 'A', 'A', 'A', 'A', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y');
 
@@ -14,8 +15,14 @@ $patern = array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/');
 // on remplace tout ce qui n'est pas "un mot" par des espaces
 $deleteUseless = preg_replace($patern, " ", $mots);
 // Nos mots sont mis dans un tableau
-$Splitmots = explode(" ",$deleteUseless);
-$Splitmots = lemmeWords($Splitmots);
+$Alemme = explode(" ",$deleteUseless);
+$string = "['".$Alemme[0]."'";
+for ($i = 1; $i <= count($Alemme)-1; $i++) {
+    $string = $string . ",'".$Alemme[$i]."'";
+}
+$string = $string . "]";
+exec('python pythonFonctions.py ' . $string , $Splitmots);
+var_dump($Splitmots);
 // On instancie une string dans laquelle nous mettrons les mots recherchés selon un certain paterne 
 $SearchWord = "'".$Splitmots[0]."'";
 // Parcours du tableau 
@@ -40,42 +47,42 @@ for ($i = 0; $i <= count($result)-1; $i++){
 
 if($_SESSION['idUtilisateur'] != 'Null'){
     
-    $requete = "select idRecherche from historique where recherche = $_GET['mots']";
+    $requete = "select idRecherche from historique where recherche = ".$_GET['mots'];
     $repBd = $bdd->prepare($requete);
     $repBd->execute();
     $idRecherche = $repBd->fetch();
     $repBd->closeCursor();
 
     if (!(empty($idRecherche))){
-        $requete = "select nbRecherche from historiqueutilisateur where idRecherche = $idRecherche and idUtilisateur = $_SESSION['idUtilisateur']";
+        $requete = "select nbRecherche from historiqueutilisateur where idRecherche = ".$idRecherche." and idUtilisateur = ".$_SESSION['idUtilisateur'];
         $repBd = $bdd->prepare($requete);
         $repBd->execute();
         $nbRecherche = $repBd->fetch();
         $repBd->closeCursor();
         
         if (!(empty($nbRecherche))){
-            $updateRelation = "update historiqueutilisateur set nbRecherche = $nbRecherche+1 where idRecherche = $idRecherche and idUtilisateur = $_SESSION['idUtilisateur']";
+            $updateRelation = "update historiqueutilisateur set nbRecherche = ".$nbRecherche."+1 where idRecherche = ".$idRecherche." and idUtilisateur = ".$_SESSION['idUtilisateur'];
             $repUpdate = $bdd->prepare($updateRelation);
             $repUpdate->execute();
             $repUpdate->closeCursor();
         }else{
-            $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('$idRecherche','$_SESSION['idUtilisateur']',1)";
+            $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('".$idRecherche."','".$_SESSION['idUtilisateur']."',1)";
             $repBdd = $bdd->prepare($query);
             $repBdd->execute();
         }
 
     }else{
-        $query = "INSERT INTO `historique`(recherche) VALUES ('$_GET['mots']')";
+        $query = "INSERT INTO `historique`(recherche) VALUES ('".$_GET['mots']."')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
 
-        $requete = "select idRecherche from historique where recherche = $_GET['mots']";
+        $requete = "select idRecherche from historique where recherche = ".$_GET['mots'];
         $repBd = $bdd->prepare($requete);
         $repBd->execute();
         $idRecherche = $repBd->fetch();
         $repBd->closeCursor();
 
-        $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('$idRecherche','$_SESSION['idUtilisateur']',1)";
+        $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('".$idRecherche."','".$_SESSION['idUtilisateur']."',1)";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
     }

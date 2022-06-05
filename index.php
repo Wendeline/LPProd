@@ -41,7 +41,7 @@ include('mylib.php');
 </div>
 
 <div class="SearchKeywords">
-  <h1> Rechercher une série : </h1>
+  <h1> Rechercher une série (par mots-clés) : </h1>
 
     <form action="search.php" method="GET" >
         <input type="text" size="50" name="mots" /></br>
@@ -65,7 +65,7 @@ include('mylib.php');
         if($_SESSION['idUtilisateur'] != 'Null'){
           // recommandation bateau on affiche juste les séries qu'il n'a pas vu
           // Dans une futur version on peut afficher les séries en fonction de leur popularité
-          $SeriesNonVu = "select * from serie where idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = $_SESSION['idUtilisateur'])";
+          $SeriesNonVu = "select * from serie where idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")";
           $repNonVU = $bdd->prepare($SeriesNonVu);
           $repNonVU->execute();
           $resultNonVu = $repNonVU->fetchAll();
@@ -83,7 +83,7 @@ include('mylib.php');
 
         }else{
           for ($i = 0; $i <= count($result)-1; $i++){
-            echo($result[$i]['titre'].'<br>');
+            echo($result[$i][1].'<br>');
           }
             
         }
@@ -99,8 +99,8 @@ include('mylib.php');
         where idmot in (select p1.idmot
         from posseder p1, posseder p2
         where p1.idmot = p2.idmot
-        and p1.idSerie in(select idSerie from regarder where aime = 1 and idUtilisateur = $_SESSION['idUtilisateur'])
-        and p2.idSerie in (select idSerie from regarder where aime = 0 and idUtilisateur = $_SESSION['idUtilisateur'])
+        and p1.idSerie in(select idSerie from regarder where aime = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
+        and p2.idSerie in (select idSerie from regarder where aime = 0 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
         group by p1.idmot
         having sum(p1.nbmots) > sum(p2.nbmots))
         group by idSerie
@@ -110,28 +110,28 @@ include('mylib.php');
         $resultReco = $repReco->fetchAll();
         $repReco->closeCursor();
 
-        $sugest = "select titre from serie where idSerie in (resultReco) and idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = $_SESSION['idUtilisateur'])";
+        $sugest = "select titre from serie where idSerie in (resultReco) and idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")";
         $repSugest = $bdd->prepare($sugest);
         $repSugest->execute();
         $resultSugest = $repSugest->fetchAll();
         $repSugest->closeCursor();
 
         for ($i = 0; $i <= count($resultSugest)-1; $i++){
-          echo($resultSugest[$i]['titre'].'<br>');
+          echo($resultSugest[$i].'<br>');
         }
 
         ?>
         <h1> À revoir </h1> <!-- Ici on lui affiche les séries qu'il a déjà vu parce qu'il pourrait avoir envie de les revoir
 
         <?php
-          $reco = "select titre from serie s, regarder r where s.idSerie = r.idSerie and vu = 1 and idUtilisateur = $_SESSION['idUtilisateur']";
+          $reco = "select titre from serie s, regarder r where s.idSerie = r.idSerie and vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'];
           $repReco = $bdd->prepare($reco);
           $repReco->execute();
           $resultReco = $repReco->fetchAll();
           $repReco->closeCursor();
     
           for ($i = 0; $i <= count($resultReco)-1; $i++){
-            echo($resultSugest[$i]['titre'].'<br>');
+            echo($resultSugest[$i].'<br>');
           }
 
   }
