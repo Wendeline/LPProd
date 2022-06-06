@@ -48,9 +48,9 @@ if(empty($_SESSION['idUtilisateur'])){
   <input type="submit" value="Déconnexion" />
   </form>
 
-  <form action="historique.php" method="POST" >
+  <form action="ProfilUtilisateur.php" method="POST" >
   <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
-  <input type="submit" value="Historique de vos recherches" />
+  <input type="submit" value="Profil" />
   </form>
   <?php
 } ?>

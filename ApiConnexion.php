@@ -117,6 +117,7 @@ switch ($http_method) {
             $repBdd = $bdd->prepare($query);
             $repBdd->execute();
             $repBdd->closeCursor();
+            unset($_SESSION["idUtilisateur"]);
             deliver_response(200, "Suppresion ok $pseudo",NULL);
             
         }
