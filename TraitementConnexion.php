@@ -14,9 +14,11 @@ switch ($http_method) {
             false, stream_context_create(array('http' => array('method' => 'GET'))) //Changer par DELETE si besoin
             );
 
+            $_SESSION['idUtilisateur'] = '501';
+            // echo($result);
+            // echo($_SESSION['idUtilisateur']);
             header('Location: http://localhost/LPProd/index.php');
             exit();
-
         }else {
             $pseudo = $_GET['pseudo'];
             $mdp = $_GET['mdp'];

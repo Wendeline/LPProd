@@ -47,7 +47,7 @@ for ($i = 0; $i <= count($result)-1; $i++){
     echo($result[$i]['titre']."<br>");
 }
 
-if($_SESSION['idUtilisateur'] != 'Null'){
+if(!empty($_SESSION['idUtilisateur'])){
     
     $requete = "select idRecherche from historique where recherche = ".$_GET['mots'];
     $repBd = $bdd->prepare($requete);

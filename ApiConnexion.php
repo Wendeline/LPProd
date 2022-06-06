@@ -42,8 +42,10 @@ switch ($http_method) {
             $repBdd->closeCursor();
             if ($result[1] == $pseudo) {
                 $_SESSION['idUtilisateur'] = $result[0];
+                var_dump($_SESSION['idUtilisateur']);
+                deliver_response(200, 'Data' , $result);
             } else {
-                deliver_response(404, "Personne non inscrite", NULL);
+                deliver_response(404, '404');
             }
         }
         break;

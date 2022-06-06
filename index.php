@@ -16,7 +16,7 @@ include('mylib.php');
 <body>
 
 <?php 
-if($_SESSION['idUtilisateur'] == 'Null'){
+if(empty($_SESSION['idUtilisateur'])){
   ?>
   <div class="connexion">
 
@@ -43,6 +43,11 @@ if($_SESSION['idUtilisateur'] == 'Null'){
   </div>
 <?php }else{
   ?>
+  <form action="deconnexion.php" method="POST" >
+  <input name="idUtilisateur" type="hidden" />
+  <input type="submit" value="Déconnexion" />
+  </form>
+
   <form action="historique.php" method="POST" >
   <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
   <input type="submit" value="Historique de vos recherches" />
@@ -65,6 +70,7 @@ if($_SESSION['idUtilisateur'] == 'Null'){
 
     <?php
 
+        //var_dump($_SESSION['idUtilisateur']);
         $req = "SELECT * from serie";
         $repBdd = $bdd->prepare($req);
         $repBdd->execute();
@@ -72,7 +78,7 @@ if($_SESSION['idUtilisateur'] == 'Null'){
         $repBdd->closeCursor();
 
         
-        if($_SESSION['idUtilisateur'] != 'Null'){
+        if(!empty($_SESSION['idUtilisateur'])){
           // recommandation bateau on affiche juste les séries qu'il n'a pas vu
           // Dans une futur version on peut afficher les séries en fonction de leur popularité
           $SeriesNonVu = "select * from serie where idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")";
@@ -105,50 +111,45 @@ if($_SESSION['idUtilisateur'] == 'Null'){
             
         }
       
-    if($_SESSION['idUtilisateur'] != 'Null'){    
+    if(!empty($_SESSION['idUtilisateur'])){    
       ?>
 
       <h1> Pour vous </h1> <!-- Ici on lui affiche les séries qu'on lui recommande en fonction de celles qu'il a aimé ou non -->
 
       <?php
-        $reco = "select sum(nbmots) , idSerie
-        from posseder p
-        where idmot in (select p1.idmot
+        $reco = "select sum(nbmots) , p.idSerie, titre
+        from posseder p, serie s
+        where p.idserie = s.idserie
+        and idmot in (select p1.idmot
         from posseder p1, posseder p2
         where p1.idmot = p2.idmot
         and p1.idSerie in(select idSerie from regarder where aime = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
         and p2.idSerie in (select idSerie from regarder where aime = 0 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
         group by p1.idmot
         having sum(p1.nbmots) > sum(p2.nbmots))
-        group by idSerie
-        order by 1 desc, 2 asc";
+        group by p.idSerie, titre
+        order by 1 desc, 3 asc";
         $repReco = $bdd->prepare($reco);
         $repReco->execute();
         $resultReco = $repReco->fetchAll();
         $repReco->closeCursor();
 
-        $sugest = "select titre from serie where idSerie in (resultReco) and idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")";
-        $repSugest = $bdd->prepare($sugest);
-        $repSugest->execute();
-        $resultSugest = $repSugest->fetchAll();
-        $repSugest->closeCursor();
-
-        for ($i = 0; $i <= count($resultSugest)-1; $i++){
-          echo($resultSugest[$i].'<br>');
+        for ($i = 0; $i <= count($resultReco)-1; $i++){
+          echo($resultReco[$i][2].'<br>');
         }
 
         ?>
         <h1> À revoir </h1> <!-- Ici on lui affiche les séries qu'il a déjà vu parce qu'il pourrait avoir envie de les revoir -->
 
         <?php
-          $reco = "select titre from serie s, regarder r where s.idSerie = r.idSerie and vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'];
-          $repReco = $bdd->prepare($reco);
-          $repReco->execute();
-          $resultReco = $repReco->fetchAll();
-          $repReco->closeCursor();
+          $revoir = "select titre from serie s, regarder r where s.idSerie = r.idSerie and vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'];
+          $repRevoir = $bdd->prepare($revoir);
+          $repRevoir->execute();
+          $resultRevoir = $repRevoir->fetchAll();
+          $repRevoir->closeCursor();
     
-          for ($i = 0; $i <= count($resultReco)-1; $i++){
-            echo($resultSugest[$i].'<br>');
+          for ($j = 0; $j <= count($resultRevoir)-1; $j++){
+            echo($resultRevoir[$j][0].'<br>');
           }
 
   }
