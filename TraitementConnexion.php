@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $http_method = $_SERVER['REQUEST_METHOD'];
 switch ($http_method) {
     case "GET":
@@ -12,7 +14,9 @@ switch ($http_method) {
             false, stream_context_create(array('http' => array('method' => 'GET'))) //Changer par DELETE si besoin
             );
 
-            echo '<pre>' .htmlspecialchars($result)  . '</pre>';
+            header('Location: http://localhost/LPProd/index.php');
+            exit();
+
         }else {
             $pseudo = $_GET['pseudo'];
             $mdp = $_GET['mdp'];
@@ -21,7 +25,6 @@ switch ($http_method) {
             false, stream_context_create(array('http' => array('method' => 'DELETE'))) 
             );
     
-            echo '<pre>' .htmlspecialchars($result)  . '</pre>';
         }
         break;
     case "POST":
@@ -39,7 +42,6 @@ switch ($http_method) {
                         'header' => array('Content-Type: application/json' . "\r\n"
                             . 'Content-Length: ' . strlen($data_string) . "\r\n"))))
             );
-            echo '<pre>' .htmlspecialchars($result)  . '</pre>';
         }
         else {
             $data = array("pseudo" => $_POST['pseudo'], "mdp" => $_POST['mdp'] ,"email" => $_POST['email'] );
@@ -55,7 +57,6 @@ switch ($http_method) {
                         'header' => array('Content-Type: application/json'."\r\n"
                             .'Content-Length: '.strlen($data_string)."\r\n"))))
             );
-            echo '<pre>' .htmlspecialchars($result)  . '</pre>';
         }
         break;
 }

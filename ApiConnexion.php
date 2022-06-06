@@ -30,21 +30,21 @@ switch ($http_method) {
         /// Récupération des critères de recherche envoyés par le Client
 		if (!empty($_GET['pseudo'])){
 		    /// Traitement
-            $pseudo = htmlspecialchars($_GET['pseudo']);
-            $mdp = htmlspecialchars($_GET['mdp']);
+            //$pseudo = htmlspecialchars($_GET['pseudo']);
+            $pseudo = filter_input(INPUT_GET, 'pseudo');
+            //$mdp = htmlspecialchars($_GET['mdp']);
+            $mdp = filter_input(INPUT_GET, 'mdp');
 
             $query = "select * from utilisateur where pseudo = :pseudo and motdepasse = :mdp";
             $repBdd = $bdd->prepare($query);
             $repBdd->execute([ 'pseudo' => $pseudo , 'mdp' => $mdp]);
-            var_dump($repBdd);
             $result = $repBdd->fetch();
             $repBdd->closeCursor();
-            var_dump($result);
-            /*if ($result[1] == $pseudo) {
-                deliver_response(200, "Bonjour $pseudo",NULL);
+            if ($result[1] == $pseudo) {
+                $_SESSION['idUtilisateur'] = $result[0];
             } else {
                 deliver_response(404, "Personne non inscrite", NULL);
-            }*/
+            }
         }
         break;
     /// Cas de la méthode POST

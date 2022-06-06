@@ -16,16 +16,15 @@ $patern = array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/');
 $deleteUseless = preg_replace($patern, " ", $mots);
 // Nos mots sont mis dans un tableau
 $Alemme = explode(" ",$deleteUseless);
-$string = "['".$Alemme[0]."'";
+/*$string = "['".$Alemme[0]."'";
 for ($i = 1; $i <= count($Alemme)-1; $i++) {
     $string = $string . ",'".$Alemme[$i]."'";
 }
 $string = $string . "]";
-$comand = 'C:\wamp64\www\LPProd\pythonFonctions.py';
-$python = 'C:\Users\Wendy\AppData\Local\Microsoft\WindowsApps\python.exe';
-exec("$python $comand $string", $Splitmots);
-//exec('python pythonFonctions.py ' . $string , $Splitmots); 
-var_dump($Splitmots);
+*/
+$output = $Alemme;
+exec('python pythonFonctions.py', $output, $retval); 
+$Splitmots = $retval;
 // On instancie une string dans laquelle nous mettrons les mots recherchés selon un certain paterne 
 $SearchWord = "'".$Splitmots[0]."'";
 // Parcours du tableau 

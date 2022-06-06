@@ -1,6 +1,5 @@
 <?php
 session_start();
-$_SESSION['idUtilisateur'] = 'Null';
 
 include('mylib.php');
 ?>
@@ -16,29 +15,40 @@ include('mylib.php');
 </head>
 <body>
 
-<div class="connexion">
+<?php 
+if($_SESSION['idUtilisateur'] == 'Null'){
+  ?>
+  <div class="connexion">
 
-  <h1> Formulaires de connexion</h1>
+    <h1> Formulaires de connexion</h1>
 
-    <form action="TraitementConnexion.php" method="GET" >
-        <h3>Se connecter : </h3>
-        Login: <input type="text" size="50" name="pseudo" /></br>
-        Mot de passe: <input type="password" size="50" name="mdp"  /></br>
-        <input name="_method" type="hidden" value="GET" />
-        <input type="submit" value="Valider" /> </p>
-        <p> Mot de passe oublié </p> <!-- à coder plus tard, ça sera un lien vers un formulaire qui dde le mail et envoie donc un mail -->
-    </form>
+      <form action="TraitementConnexion.php" method="GET" >
+          <h3>Se connecter : </h3>
+          Login: <input type="text" size="50" name="pseudo" /></br>
+          Mot de passe: <input type="password" size="50" name="mdp"  /></br>
+          <input name="_method" type="hidden" value="GET" />
+          <input type="submit" value="Valider" /> </p>
+          <p> Mot de passe oublié </p> <!-- à coder plus tard, ça sera un lien vers un formulaire qui dde le mail et envoie donc un mail -->
+      </form>
 
-    <form action="TraitementConnexion.php" method="POST" >
-        <h3>S'inscrire : </h3>
-        Login : <input type="text" size="50" name="pseudo" /> </br>
-        Mot de passe : <input type="password" size="50" name="mdp" /> </br>
-        Email : <input type="email" size="50" name="email" /> </br>
-        <input name="_method" type="hidden" value="POST" />
-        <input type="submit" value="Valider" /> </p>
-    </form>
+      <form action="TraitementConnexion.php" method="POST" >
+          <h3>S'inscrire : </h3>
+          Login : <input type="text" size="50" name="pseudo" /> </br>
+          Mot de passe : <input type="password" size="50" name="mdp" /> </br>
+          Email : <input type="email" size="50" name="email" /> </br>
+          <input name="_method" type="hidden" value="POST" />
+          <input type="submit" value="Valider" /> </p>
+      </form>
 
-</div>
+  </div>
+<?php }else{
+  ?>
+  <form action="historique.php" method="POST" >
+  <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
+  <input type="submit" value="Historique de vos recherches" />
+  </form>
+  <?php
+} ?>
 
 <div class="SearchKeywords">
   <h1> Rechercher une série (par mots-clés) : </h1>
@@ -72,13 +82,20 @@ include('mylib.php');
           $repNonVU->closeCursor();
 
           for ($i = 0; $i <= count($resultNonVu)-1; $i++){
-            echo($resultNonVu[$i]['titre']);
+            echo($resultNonVu[$i][1]);
             ?>
             <form action="SaveLike.php?serie=$resultNonVu[$i]['idSerie']&" method="get">
-            <select name="Aime"> 
+            <label>
+              <input type="radio" name="Aime" value="1">J'aime
+            </label>
+            <label>
+              <input type="radio" name="Aime" value="0">Je n'aime pas
+            </label>
+            <!--<select name="Aime"> 
             <option type="submit" name="submit" value="1">J'aime</option>
-            <option type="submit" name="submit" value="0">Je n'aime pas</option>
+            <option type="submit" name="submit" value="0">Je n'aime pas</option>-->
             <?php
+            echo('<br>');
           }
 
         }else{
@@ -121,7 +138,7 @@ include('mylib.php');
         }
 
         ?>
-        <h1> À revoir </h1> <!-- Ici on lui affiche les séries qu'il a déjà vu parce qu'il pourrait avoir envie de les revoir
+        <h1> À revoir </h1> <!-- Ici on lui affiche les séries qu'il a déjà vu parce qu'il pourrait avoir envie de les revoir -->
 
         <?php
           $reco = "select titre from serie s, regarder r where s.idSerie = r.idSerie and vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'];
@@ -142,3 +159,5 @@ include('mylib.php');
 
 </body>
 </html>
+
+<a href="http://localhost/LPProd/MentionsLegales.php">Mentions légales</a>
