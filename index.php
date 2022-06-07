@@ -104,12 +104,12 @@ if(empty($_SESSION['idUtilisateur'])){
 
             
             <form action="SaveLike.php" method="POST" >
-            <input name="serie" value ="<?php $idS ?>" type="hidden" />
+            <?php echo("<input name='serie' value ='".$idS."' type='hidden' />") ?>
             <input name="aime" value ="1" type="hidden" />
             <input type="submit" value="J'aime" />
             </form>
             <form action="SaveLike.php" method="POST" >
-            <input name="serie" value ="<?php $idS ?>" type="hidden" />
+            <?php echo("<input name='serie' value ='".$idS."' type='hidden' />") ?>
             <input name="aime" value ="0" type="hidden" />
             <input type="submit" value="Je n'aime pas" />
             </form>
