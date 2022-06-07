@@ -89,17 +89,31 @@ if(empty($_SESSION['idUtilisateur'])){
 
           for ($i = 0; $i <= count($resultNonVu)-1; $i++){
             echo($resultNonVu[$i][1]);
+            $idS = $resultNonVu[$i][0];
             ?>
-            <form action="SaveLike.php?serie=$resultNonVu[$i]['idSerie']&" method="get">
+            <!--<form action="SaveLike.php?serie=$resultNonVu[$i]['idSerie']&" method="get">
             <label>
               <input type="radio" name="Aime" value="1">J'aime
             </label>
             <label>
               <input type="radio" name="Aime" value="0">Je n'aime pas
-            </label>
+            </label> -->
             <!--<select name="Aime"> 
             <option type="submit" name="submit" value="1">J'aime</option>
             <option type="submit" name="submit" value="0">Je n'aime pas</option>-->
+
+            
+            <form action="SaveLike.php" method="POST" >
+            <input name="serie" value ="<?php $idS ?>" type="hidden" />
+            <input name="aime" value ="1" type="hidden" />
+            <input type="submit" value="J'aime" />
+            </form>
+            <form action="SaveLike.php" method="POST" >
+            <input name="serie" value ="<?php $idS ?>" type="hidden" />
+            <input name="aime" value ="0" type="hidden" />
+            <input type="submit" value="Je n'aime pas" />
+            </form>
+
             <?php
             echo('<br>');
           }
