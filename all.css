@@ -1,13 +1,21 @@
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 70%;
-    border: solid red 1px;
-}
-
 body {
     position: relative;
+}
+
+.header-div {
+    position: fixed;
+    top: 0;
+    left: 30px;
+    width: calc(70% - 60px);
+    height: 40px;
+    background-color: white;
+    border-bottom: solid 1px black;
+    z-index: 99;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: bold;
 }
 
 .connexion {
@@ -23,11 +31,86 @@ body {
     border-left: solid 1px black;
 }
 
-.SearchKeywords {
-    width: fit-content;
+.deconnexion {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 92vh;
+    width: 10%;
+    margin-bottom: 4vh;
+    margin-top: 4vh;
+    padding: 30px;
+    display: flex;
+    justify-content: center; 
+    text-align: center;
+    border-left: solid 1px black;
 }
 
-.catalogue {
-   
+.deco-btn {
+    margin-bottom: 10px;
+}
 
+.page-content {
+    position: absolute;
+    top: 40px;
+    height: calc(100vh - 40px);
+    width: 70%;
+    overflow-y: scroll;
+    align-content: center;
+    text-align: center;
+}
+
+.page-content::-webkit-scrollbar {
+  display: none;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px;   
+}
+
+.input-bar {
+    margin-right: 20px;
+}
+
+.search-bar {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.list {
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+}
+
+.elment-list {
+    padding: 0px;
+}
+
+.element-connect {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.element-text {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.btn-outline-success {
+    border: green 1px solid;
+}
+
+.btn-outline-error {
+    border: red 1px solid;
+}
+
+.link {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 2px;
 }
