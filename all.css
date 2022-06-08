@@ -1,24 +1,33 @@
-head{
-    position: absolute;
-    top :0;
-    left:0;
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70%;
+    border: solid red 1px;
 }
-body{
-    background-color: grey;
+
+body {
     position: relative;
 }
-.connexion{
+
+.connexion {
     position: fixed;
     top: 0;
     right: 0;
-    
+    height: 92vh;
+    width: 30%;
+    margin-bottom: 4vh;
+    margin-top: 4vh;
+    padding: 30px;
+    vertical-align: center;
+    border-left: solid 1px black;
 }
-.SearchKeywords{
-    width: fit-content;
 
-   
+.SearchKeywords {
+    width: fit-content;
 }
-.catalogue{
+
+.catalogue {
    
 
 }
