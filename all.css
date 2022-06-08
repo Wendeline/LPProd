@@ -1,5 +1,6 @@
 body {
     position: relative;
+    background-color: rgba(245, 245, 245, 0.734);
 }
 
 .header-div {
@@ -8,7 +9,7 @@ body {
     left: 30px;
     width: calc(70% - 60px);
     height: 40px;
-    background-color: white;
+    background-color: rgba(245, 245, 245, 0.734);
     border-bottom: solid 1px black;
     z-index: 99;
 }
@@ -113,4 +114,33 @@ body {
     display: block;
     margin-top: 15px;
     margin-bottom: 2px;
+}
+
+.profil {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.histo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.link-histo {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+.page{
+    text-align: center;
+}
+
+.retour {
+    position: fixed;
+    top: 10px;
+    left: 10px;
 }

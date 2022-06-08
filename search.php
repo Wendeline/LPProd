@@ -17,9 +17,10 @@ include('mylib.php');
 </head>
 <body>
 
-<a href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
+<a class="retour" href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
 <br><br>
 
+<div class="page">
 <?php
 
 //include('pythonFonctions.py');
@@ -62,8 +63,8 @@ $result = $repBdd->fetchAll();
 $repBdd->closeCursor();
 
 // Pour le moment on affiche juste le nom des séries selon leur score de pertinence
-echo("Votre recherche : ".$_GET['mots']);
-echo("<br>Résultat.s : <br>");
+echo("<h1>Votre recherche : ".$_GET['mots']."</h1>");
+echo("<br><h4>Résultat.s : </h4><br>");
 for ($i = 0; $i <= count($result)-1; $i++){
     echo($result[$i][0]."<br>");
 }
@@ -122,3 +123,7 @@ if(!empty($_SESSION['idUtilisateur'])){
 }
 
 ?>
+
+</div>
+
+</body>

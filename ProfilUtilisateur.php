@@ -16,31 +16,33 @@ include('mylib.php');
 </head>
 <body>
 
-<form action="historique.php" method="POST" >
-  <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
-  <input type="submit" value="Historique" class="btn btn-primary" />
-</form>
+  <form class="histo" action="historique.php" method="POST" >
+    <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
+    <input type="submit" value="Historique" class="btn btn-primary" />
+  </form>
 
-<form action="TraitementConnexion.php" method="POST" >
-        <h3> Modifier votre mot de passe ou email : </h3>
-        Identifiant : <input type="text" size="50" name="pseudo" /> </br>
-        Mot de passe : <input type="password" size="50" name="mdp" /> </br>
-        Email : <input type="email" size="50" name="email" /> </br>
-        <input name="_method" type="hidden" value="PUT" />
-        <input type="submit" value="Valider" class="btn btn-primary"/> </p>
-    </form>
+  <div class="profil">
+    <div>
+    <form action="TraitementConnexion.php" method="POST" >
+          <h3> Modifier votre mot de passe ou email : </h3>
+          Identifiant : <input type="text" size="50" name="pseudo" /> </br>
+          Mot de passe : <input type="password" size="50" name="mdp" /> </br>
+          Email : <input type="email" size="50" name="email" /> </br>
+          <input name="_method" type="hidden" value="PUT" />
+          <input type="submit" value="Valider" class="btn btn-primary"/> </p>
+      </form>
 
-    <form action="TraitementConnexion.php" method="GET" >
-        <h3>Supprimer son compte : </h3>
-        Login: <input type="text" size="50" name="pseudo" /></br>
-        Mot de passe: <input type="password" size="50" name="mdp"  /></br>
-        <input name="_method" type="hidden" value="DELETE" />
-        <input type="submit" value="Valider"class="btn btn-primary" /> </p>
-    </form>
+      <form action="TraitementConnexion.php" method="GET" >
+          <h3>Supprimer son compte : </h3>
+          Login: <input type="text" size="50" name="pseudo" /></br>
+          Mot de passe: <input type="password" size="50" name="mdp"  /></br>
+          <input name="_method" type="hidden" value="DELETE" />
+          <input type="submit" value="Valider"class="btn btn-primary" /> </p>
+      </form>
+    </div>
+  </div>
 
-</div>
+  <div class="link-histo" href="http://localhost/LPProd/MentionsLegales.php">Mentions légales</div>
 
 </body>
 </html>
-
-<a href="http://localhost/LPProd/MentionsLegales.php">Mentions légales</a>

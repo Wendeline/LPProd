@@ -16,11 +16,12 @@ include('mylib.php');
 </head>
 <body>
 
-<a href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
+<a class="retour" href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
 <br><br>
 
-<?php
+<div class="page">
 
+<?php
 
 $req = "select recherche from historique h, historiqueutilisateur hu where h.idrecherche = hu.idrecherche and hu.idutilisateur =".$_SESSION['idUtilisateur']. " order by nbrecherche desc";
 $repBdd = $bdd->prepare($req);
@@ -29,7 +30,7 @@ $result = $repBdd->fetchAll();
 $repBdd->closeCursor();
 
 // Pour le moment on affiche juste le nom des séries selon leur score de pertinence
-echo("Vos recherches : <br><br>");
+echo("<h1>Vos recherches : </h1><br><br>");
 for ($i = 0; $i <= count($result)-1; $i++){
     echo($result[$i][0]."<br>");
 }
@@ -42,4 +43,4 @@ for ($i = 0; $i <= count($result)-1; $i++){
 </body>
 </html>
 
-<a href="http://localhost/LPProd/MentionsLegales.php">Mentions légales</a>
+<a class="link-histo" href="http://localhost/LPProd/MentionsLegales.php">Mentions légales</a>
