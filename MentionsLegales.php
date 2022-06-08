@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="all.css">
 <h1> Mentions légales</h1>
 <i>En vigueur au 06/06/2022</i>
 

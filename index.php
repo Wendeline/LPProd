@@ -10,47 +10,50 @@ include('mylib.php');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="all.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <h1> LP PROD </h1>
 </head>
 <body>
 
 <?php 
+ 
 if(empty($_SESSION['idUtilisateur'])){
   ?>
   <div class="connexion">
-
-    <h1> Formulaires de connexion</h1>
-
-      <form action="TraitementConnexion.php" method="GET" >
-          <h3>Se connecter : </h3>
-          Login: <input type="text" size="50" name="pseudo" /></br>
-          Mot de passe: <input type="password" size="50" name="mdp"  /></br>
-          <input name="_method" type="hidden" value="GET" />
-          <input type="submit" value="Valider" /> </p>
+   
+    <div class="seconnecter">
+      <form action="TraitementConnexion.php" method="GET"  >
+          <h3>Se connecter </h3>
+          <label class="form-label">Login:</label> <input type="text" size="50" name="pseudo" class="form-control" /></br>
+          <label class="form-label"> Mot de passe:</label> <input type="password" size="50" name="mdp" class="form-control" /></br>
+          <input name="_method" type="hidden" value="GET"  />
+          <input type="submit" value="Valider" class="btn btn-primary" /> </p>
           <p> Mot de passe oublié </p> <!-- à coder plus tard, ça sera un lien vers un formulaire qui dde le mail et envoie donc un mail -->
       </form>
-
+    </div>
+    <div class="sinscrire">
       <form action="TraitementConnexion.php" method="POST" >
-          <h3>S'inscrire : </h3>
-          Login : <input type="text" size="50" name="pseudo" /> </br>
-          Mot de passe : <input type="password" size="50" name="mdp" /> </br>
-          Email : <input type="email" size="50" name="email" /> </br>
+          <h3>S'inscrire </h3>
+          <label class="form-label">Login :</label> <input type="text" size="50" name="pseudo" class="form-control" /> </br>
+          <label class="form-label">Mot de passe :</label> <input type="password" size="50" name="mdp" class="form-control"/> </br>
+          <label class="form-label">Email : </label><input type="email" size="50" name="email" class="form-control"/> </br>
           <input name="_method" type="hidden" value="POST" />
-          <input type="submit" value="Valider" /> </p>
+          <input type="submit" value="Valider" class="btn btn-primary"/> </p>
       </form>
-
+    </div>
   </div>
 <?php }else{
   ?>
   <form action="deconnexion.php" method="POST" >
   <input name="idUtilisateur" type="hidden" />
-  <input type="submit" value="Déconnexion" />
+  <input type="submit" value="Déconnexion" class="btn btn-primary" />
   </form>
 
   <form action="ProfilUtilisateur.php" method="POST" >
   <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
-  <input type="submit" value="Profil" />
+  <input type="submit" value="Profil" class="btn btn-primary" />
   </form>
   <?php
 } ?>
@@ -59,8 +62,8 @@ if(empty($_SESSION['idUtilisateur'])){
   <h1> Rechercher une série (par mots-clés) : </h1>
 
     <form action="search.php" method="GET" >
-        <input type="text" size="50" name="mots" /></br>
-        <input type="submit" value="Valider" /> </p>
+        <input type="text" size="50" name="mots" class="form-control" /></br>
+        <input type="submit" value="Valider" class="btn btn-primary" />  </p>
     </form>
 </div>
 
@@ -106,12 +109,12 @@ if(empty($_SESSION['idUtilisateur'])){
             <form action="SaveLike.php" method="POST" >
             <?php echo("<input name='serie' value ='".$idS."' type='hidden' />") ?>
             <input name="aime" value ="1" type="hidden" />
-            <input type="submit" value="J'aime" />
+            <input type="submit" value="J'aime" class="btn btn-primary" />
             </form>
             <form action="SaveLike.php" method="POST" >
             <?php echo("<input name='serie' value ='".$idS."' type='hidden' />") ?>
             <input name="aime" value ="0" type="hidden" />
-            <input type="submit" value="Je n'aime pas" />
+            <input type="submit" value="Je n'aime pas" class="btn btn-primary" />
             </form>
 
             <?php

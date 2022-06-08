@@ -10,6 +10,7 @@ include('mylib.php');
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="all.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
@@ -17,7 +18,7 @@ include('mylib.php');
 
 <form action="historique.php" method="POST" >
   <input name="idUtilisateur" type="hidden" value="<?php $_SESSION['idUtilisateur'] ?>" />
-  <input type="submit" value="Historique" />
+  <input type="submit" value="Historique" class="btn btn-primary" />
 </form>
 
 <form action="TraitementConnexion.php" method="POST" >
@@ -26,7 +27,7 @@ include('mylib.php');
         Mot de passe : <input type="password" size="50" name="mdp" /> </br>
         Email : <input type="email" size="50" name="email" /> </br>
         <input name="_method" type="hidden" value="PUT" />
-        <input type="submit" value="Valider" /> </p>
+        <input type="submit" value="Valider" class="btn btn-primary"/> </p>
     </form>
 
     <form action="TraitementConnexion.php" method="GET" >
@@ -34,7 +35,7 @@ include('mylib.php');
         Login: <input type="text" size="50" name="pseudo" /></br>
         Mot de passe: <input type="password" size="50" name="mdp"  /></br>
         <input name="_method" type="hidden" value="DELETE" />
-        <input type="submit" value="Valider" /> </p>
+        <input type="submit" value="Valider"class="btn btn-primary" /> </p>
     </form>
 
 </div>
