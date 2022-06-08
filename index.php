@@ -133,7 +133,7 @@ if(empty($_SESSION['idUtilisateur'])){
       ?>
       <h1> Pour vous </h1> <!-- Ici on lui affiche les séries qu'on lui recommande en fonction de celles qu'il a aimé ou non -->
 
-      <?php
+      <?php // On ne recommande pas de série déjà vu 
         $reco = "select sum(nbmots) , p.idSerie, titre
         from posseder p, serie s
         where p.idserie = s.idserie
@@ -144,6 +144,7 @@ if(empty($_SESSION['idUtilisateur'])){
         and p2.idSerie in (select idSerie from regarder where aime = 0 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
         group by p1.idmot
         having sum(p1.nbmots) > sum(p2.nbmots))
+        and s.idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].") 
         group by p.idSerie, titre
         order by 1 desc, 3 asc";
         $repReco = $bdd->prepare($reco);
@@ -167,6 +168,7 @@ if(empty($_SESSION['idUtilisateur'])){
             from posseder p, serie s
             where p.idserie = s.idserie
             and idmot in (select idmot from regarder r, posseder p where r.idserie = p.idserie and aime = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
+            and s.idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
             having sum(nbmots) > 50000 
             group by p.idSerie, titre
             order by 1 desc, 3 asc"; // le 50 000 est totalement subjectif ça me semblait juste pas trop mal 
@@ -190,6 +192,7 @@ if(empty($_SESSION['idUtilisateur'])){
               from posseder p, serie s
               where p.idserie = s.idserie
               and idmot not in (select idmot from regarder r, posseder p where r.idserie = p.idserie and aime = 0 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
+              and s.idSerie not in (select idSerie from regarder where vu = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
               having sum(nbmots) > 10000 
               group by p.idSerie, titre
               order by 1 desc, 3 asc"; // le 10 000 est totalement subjectif ça me semblait juste pas trop mal 
