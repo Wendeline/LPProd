@@ -8,7 +8,7 @@ include('mylib.php');
 function deliver_response($status, $status_message, $data)
 {
     /// Paramétrage de l'entête HTTP, suite
-    header("HTTP/1.1 $status $status_message");
+    //header("HTTP/1.1 $status $status_message");
 
     /// Paramétrage de la réponse retournée
     $response['status'] = $status;
@@ -16,7 +16,7 @@ function deliver_response($status, $status_message, $data)
     $response['data'] = $data;
 
     /// Mapping de la réponse au format JSON
-    $json_response = json_encode($response);
+    $json_response = json_encode($response['data']);
     echo $json_response;
 }
 
@@ -32,8 +32,10 @@ switch ($http_method) {
 		    /// Traitement
             //$pseudo = htmlspecialchars($_GET['pseudo']);
             $pseudo = filter_input(INPUT_GET, 'pseudo');
+            //$pseudo=$_GET['pseudo'];
             //$mdp = htmlspecialchars($_GET['mdp']);
             $mdp = filter_input(INPUT_GET, 'mdp');
+            //$mdp=$_GET['mdp'];
 
             $query = "select * from utilisateur where pseudo = :pseudo and motdepasse = :mdp";
             $repBdd = $bdd->prepare($query);
@@ -41,11 +43,9 @@ switch ($http_method) {
             $result = $repBdd->fetch();
             $repBdd->closeCursor();
             if ($result[1] == $pseudo) {
-                $_SESSION['idUtilisateur'] = $result[0];
-                var_dump($_SESSION['idUtilisateur']);
-                deliver_response(200, 'Data' , $result);
+                deliver_response(200, 'Data' , $result[0]);
             } else {
-                deliver_response(404, '404');
+                deliver_response(404, '404',$result);
             }
         }
         break;

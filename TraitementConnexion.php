@@ -13,10 +13,7 @@ switch ($http_method) {
             $result = file_get_contents("http://localhost/LPProd/ApiConnexion.php?pseudo=$pseudo&mdp=$mdp",
             false, stream_context_create(array('http' => array('method' => 'GET'))) //Changer par DELETE si besoin
             );
-
-            $_SESSION['idUtilisateur'] = '501';
-            // echo($result);
-            // echo($_SESSION['idUtilisateur']);
+            $_SESSION['idUtilisateur']= str_replace('"','',$result);
             header('Location: http://localhost/LPProd/index.php');
             exit();
         }else {

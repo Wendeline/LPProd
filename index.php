@@ -20,6 +20,7 @@ include('mylib.php');
 <?php 
  
 if(empty($_SESSION['idUtilisateur'])){
+  
   ?>
   <div class="connexion">
    
@@ -72,8 +73,7 @@ if(empty($_SESSION['idUtilisateur'])){
   <h1>Notre catalogue</h1>
 
     <?php
-
-        //var_dump($_SESSION['idUtilisateur']);
+        
         $req = "SELECT * from serie";
         $repBdd = $bdd->prepare($req);
         $repBdd->execute();
@@ -129,8 +129,9 @@ if(empty($_SESSION['idUtilisateur'])){
         }
       
     if(!empty($_SESSION['idUtilisateur'])){    
+      
+      echo ($_SESSION['idUtilisateur']);
       ?>
-
       <h1> Pour vous </h1> <!-- Ici on lui affiche les séries qu'on lui recommande en fonction de celles qu'il a aimé ou non -->
 
       <?php
