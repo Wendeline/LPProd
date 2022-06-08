@@ -15,16 +15,17 @@ $patern = array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/');
 // on remplace tout ce qui n'est pas "un mot" par des espaces
 $deleteUseless = preg_replace($patern, " ", $mots);
 // Nos mots sont mis dans un tableau
-$Alemme = explode(" ",$deleteUseless);
-/*$string = "['".$Alemme[0]."'";
-for ($i = 1; $i <= count($Alemme)-1; $i++) {
-    $string = $string . ",'".$Alemme[$i]."'";
-}
-$string = $string . "]";
-*/
-$output = $Alemme;
-exec('python pythonFonctions.py', $output, $retval); 
-$Splitmots = $retval;
+$Splitmots = explode(" ",$deleteUseless);
+// $Alemme = explode(" ",$deleteUseless);
+// /*$string = "['".$Alemme[0]."'";
+// for ($i = 1; $i <= count($Alemme)-1; $i++) {
+//     $string = $string . ",'".$Alemme[$i]."'";
+// }
+// $string = $string . "]";
+// */
+// $output = $Alemme;
+// exec('python pythonFonctions.py', $output, $retval); 
+// $Splitmots = $retval;
 // On instancie une string dans laquelle nous mettrons les mots recherchés selon un certain paterne 
 $SearchWord = "'".$Splitmots[0]."'";
 // Parcours du tableau 
