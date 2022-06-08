@@ -2,6 +2,26 @@
 session_start();
 // On inclus la connexion à la base de données
 include('mylib.php');
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Recherche - LPProd</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="all.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<a href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
+<br><br>
+
+<?php
+
 //include('pythonFonctions.py');
 
 $accents  = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ');
@@ -45,7 +65,7 @@ $repBdd->closeCursor();
 echo("Votre recherche : ".$_GET['mots']);
 echo("<br>Résultat.s : <br>");
 for ($i = 0; $i <= count($result)-1; $i++){
-    echo($result[$i]['titre']."<br>");
+    echo($result[$i][0]."<br>");
 }
 
 if(!empty($_SESSION['idUtilisateur'])){
