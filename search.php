@@ -70,34 +70,42 @@ for ($i = 0; $i <= count($result)-1; $i++){
 
 if(!empty($_SESSION['idUtilisateur'])){
     
-    $requete = "select idRecherche from historique where recherche = ".$_GET['mots'];
+    $requete = "select idRecherche from historique where recherche = '".$_GET['mots']."'";
     $repBd = $bdd->prepare($requete);
     $repBd->execute();
     $idRecherche = $repBd->fetch();
     $repBd->closeCursor();
 
-    if (!(empty($idRecherche))){
-        $requete = "select nbRecherche from historiqueutilisateur where idRecherche = ".$idRecherche." and idUtilisateur = ".$_SESSION['idUtilisateur'];
+    if ($idRecherche != false){
+        
+        $requete = "select nbRecherche from historiqueutilisateur where idRecherche = ".$idRecherche[0]." and idUtilisateur = ".$_SESSION['idUtilisateur'];
         $repBd = $bdd->prepare($requete);
         $repBd->execute();
         $nbRecherche = $repBd->fetch();
         $repBd->closeCursor();
         
-        if (!(empty($nbRecherche))){
-            $updateRelation = "update historiqueutilisateur set nbRecherche = ".$nbRecherche."+1 where idRecherche = ".$idRecherche." and idUtilisateur = ".$_SESSION['idUtilisateur'];
+        if ($nbRecherche != false){
+            $bdd->beginTransaction();
+            $updateRelation = "update historiqueutilisateur set nbRecherche = ".$nbRecherche[0]."+1 where idRecherche = ".$idRecherche[0]." and idUtilisateur = ".$_SESSION['idUtilisateur'];
             $repUpdate = $bdd->prepare($updateRelation);
             $repUpdate->execute();
+            $bdd->commit();
             $repUpdate->closeCursor();
         }else{
-            $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('".$idRecherche."','".$_SESSION['idUtilisateur']."',1)";
+            $bdd->beginTransaction();
+            $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('".$idRecherche[0]."','".$_SESSION['idUtilisateur']."',1)";
             $repBdd = $bdd->prepare($query);
             $repBdd->execute();
+            $bdd->commit();
         }
 
     }else{
+        $bdd->beginTransaction();
         $query = "INSERT INTO `historique`(recherche) VALUES ('".$_GET['mots']."')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
+        $bdd->commit();
+        
 
         $requete = "select idRecherche from historique where recherche = ".$_GET['mots'];
         $repBd = $bdd->prepare($requete);
@@ -105,9 +113,11 @@ if(!empty($_SESSION['idUtilisateur'])){
         $idRecherche = $repBd->fetch();
         $repBd->closeCursor();
 
-        $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('".$idRecherche."','".$_SESSION['idUtilisateur']."',1)";
+        $bdd->beginTransaction();
+        $query = "INSERT INTO `historiqueutilisateur`(idRecherche, idUtilisateur, nbRecherche) VALUES ('".$idRecherche[0]."','".$_SESSION['idUtilisateur']."',1)";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
+        $bdd->commit();
     }
 }
 

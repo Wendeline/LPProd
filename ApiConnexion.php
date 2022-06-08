@@ -63,6 +63,7 @@ switch ($http_method) {
         $query = "INSERT INTO `utilisateur`(pseudo,motdepasse,mail) VALUES ('$pseudo','$mdp','$email')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
+        oci_commit($bdd);
         $result = $repBdd->fetch();
         $repBdd->closeCursor();
         if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
@@ -94,6 +95,7 @@ switch ($http_method) {
         $query = "UPDATE `utilisateur` SET `motdepasse`='$mdp',`mail`='$email' WHERE pseudo = '$pseudo'";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
+        oci_commit($bdd);
         while($result = $repBdd->fetch())
         {
             $idinit= $result['pseudo'];
