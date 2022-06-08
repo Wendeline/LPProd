@@ -130,7 +130,6 @@ if(empty($_SESSION['idUtilisateur'])){
       
     if(!empty($_SESSION['idUtilisateur'])){    
       
-      echo ($_SESSION['idUtilisateur']);
       ?>
       <h1> Pour vous </h1> <!-- Ici on lui affiche les séries qu'on lui recommande en fonction de celles qu'il a aimé ou non -->
 
@@ -152,9 +151,66 @@ if(empty($_SESSION['idUtilisateur'])){
         $resultReco = $repReco->fetchAll();
         $repReco->closeCursor();
 
-        for ($i = 0; $i <= count($resultReco)-1; $i++){
-          echo($resultReco[$i][2].'<br>');
+        if (!empty($resultReco)){ // Si un utilisateur a aimé et n'a pas aimé au moins une série
+          for ($i = 0; $i <= count($resultReco)-1; $i++){
+            echo($resultReco[$i][2].'<br>');
+          }
+        }else{ // sinon on commence par vérifier si il a aimé au moins une série
+          $recoAime = "select idSerie from regarder where aime = 1 and idUtilisateur =".$_SESSION['idUtilisateur'];
+          $repAime = $bdd->prepare($recoAime);
+          $repAime->execute();
+          $resultAime = $repAime->fetchAll();
+          $repAime->closeCursor();
+
+          if (!empty($resultAime)){
+            $getLike = "select sum(nbmots) , p.idSerie, titre
+            from posseder p, serie s
+            where p.idserie = s.idserie
+            and idmot in (select idmot from regarder r, posseder p where r.idserie = p.idserie and aime = 1 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
+            having sum(nbmots) > 50000 
+            group by p.idSerie, titre
+            order by 1 desc, 3 asc"; // le 50 000 est totalement subjectif ça me semblait juste pas trop mal 
+            $repLike = $bdd->prepare($getLike); // pour pas avoir les séries qui ont peu de mots en communs avec celles que l'utilisateur a aimé
+            $repLike->execute();
+            $resultLike = $repLike->fetchAll();
+            $repLike->closeCursor();
+            
+            for ($i = 0; $i <= count($resultLike)-1; $i++){
+              echo($resultLike[$i][2].'<br>');
+            }
+          }else{ // Si il n'a pas encore aimé une série la recommandation se fera en fonction des séries qu'il n'a pas aimé 
+            $recoAimePas = "select idSerie from regarder where aime = 0 and idUtilisateur =".$_SESSION['idUtilisateur'];
+            $repAimePas = $bdd->prepare($recoAimePas);
+            $repAimePas->execute();
+            $resultAimePas = $repAimePas->fetchAll();
+            $repAimePas->closeCursor();
+
+            if (!empty($resultAimePas)){
+              $getNotLike = "select sum(nbmots) , p.idSerie, titre
+              from posseder p, serie s
+              where p.idserie = s.idserie
+              and idmot not in (select idmot from regarder r, posseder p where r.idserie = p.idserie and aime = 0 and idUtilisateur = ".$_SESSION['idUtilisateur'].")
+              having sum(nbmots) > 10000 
+              group by p.idSerie, titre
+              order by 1 desc, 3 asc"; // le 10 000 est totalement subjectif ça me semblait juste pas trop mal 
+              $getNotLike = $bdd->prepare($getNotLike); // pour quand même qu'on lui recommande des trucs même si il aime pas grand chose
+              $getNotLike->execute();
+              $resultNotLike = $getNotLike->fetchAll();
+              $getNotLike->closeCursor();
+              
+              for ($j = 0; $j <= count($resultNotLike)-1; $j++){
+                echo($resultNotLike[$j][2].'<br>');
+              }
+            }else{ // si il n'a pas encore donné son avis on va juste bêtement lui afficher toutes les séries qu'il n'a pas encore vu
+              echo("Aimez vos séries préférés pour de meilleures recommandations <br>");
+              for ($i = 0; $i <= count($resultNonVu)-1; $i++){
+                echo($resultNonVu[$i][1]. "<br>");
+              }
+            }
+          }
+          
         }
+        
 
         ?>
         <h1> À revoir </h1> <!-- Ici on lui affiche les séries qu'il a déjà vu parce qu'il pourrait avoir envie de les revoir -->
