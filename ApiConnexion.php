@@ -60,14 +60,15 @@ switch ($http_method) {
         $mdp = $data->mdp;
         $email = $data->email;
         
-        $query = "select max(idutilisateur) from utilisateur;";
+        $query = "select max(idutilisateur) from utilisateur";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
        // oci_commit($bdd);
         $test = $repBdd->fetch();
         $repBdd->closeCursor();
+        $test = $test[0]+1;
 
-        $query = "INSERT INTO `utilisateur` VALUES ('1002','$pseudo','$mdp','$email')";
+        $query = "INSERT INTO `utilisateur` VALUES ('$test','$pseudo','$mdp','$email')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
         oci_commit($bdd);
