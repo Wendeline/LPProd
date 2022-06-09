@@ -14,6 +14,9 @@ include('mylib.php');
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
+<a class="retour" href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
+<br><br>
+
 <body>
 
   <form class="histo" action="historique.php" method="POST" >
