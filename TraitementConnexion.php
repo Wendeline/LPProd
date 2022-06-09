@@ -13,7 +13,6 @@ switch ($http_method) {
             $result = file_get_contents("http://localhost/LPProd/ApiConnexion.php?pseudo=$pseudo&mdp=$mdp",
             false, stream_context_create(array('http' => array('method' => 'GET'))) //Changer par DELETE si besoin
             );
-            echo $result;
             if ($result =='false'){
 
             }else{
@@ -28,7 +27,8 @@ switch ($http_method) {
             $result = file_get_contents("http://localhost/LPProd/ApiConnexion.php?pseudo=$pseudo&mdp=$mdp",
             false, stream_context_create(array('http' => array('method' => 'DELETE'))) 
             );
-    
+            unset($_SESSION["idUtilisateur"]);
+            header('Location: http://localhost/LPProd/index.php');
         }
         break;
     case "POST":
@@ -46,6 +46,7 @@ switch ($http_method) {
                         'header' => array('Content-Type: application/json' . "\r\n"
                             . 'Content-Length: ' . strlen($data_string) . "\r\n"))))
             );
+            //echo $result;
             header('Location: http://localhost/LPProd/index.php');
         }
         else {
@@ -62,6 +63,8 @@ switch ($http_method) {
                         'header' => array('Content-Type: application/json'."\r\n"
                             .'Content-Length: '.strlen($data_string)."\r\n"))))
             );
+            unset($_SESSION["idUtilisateur"]);
+            header('Location: http://localhost/LPProd/index.php');
         }
         break;
 }

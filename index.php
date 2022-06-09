@@ -50,7 +50,7 @@ include('mylib.php');
         </form>
       </div>
 
-      <?php }else{  echo$_SESSION['idUtilisateur']?>
+      <?php }else{  ?>
 
         <div>
           <form class="deco-btn" action="deconnexion.php" method="POST" >
