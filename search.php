@@ -69,7 +69,7 @@ for ($i = 0; $i <= count($result)-1; $i++){
     echo($result[$i][0]."<br>");
 }
 
-if($_SESSION['idUtilisateur'] != false){
+if($_SESSION['idUtilisateur'] != false || !empty($_SESSION['idUtilisateur'])){
     
     $requete = "select idRecherche from historique where recherche = '".$_GET['mots']."'";
     $repBd = $bdd->prepare($requete);
@@ -123,3 +123,6 @@ if($_SESSION['idUtilisateur'] != false){
 </div>
 
 </body>
+</html>
+
+<a class="link-histo" href="http://localhost/LPProd/MentionsLegales.php">Mentions légales</a>
