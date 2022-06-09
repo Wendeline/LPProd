@@ -46,7 +46,7 @@ switch ($http_method) {
                         'header' => array('Content-Type: application/json' . "\r\n"
                             . 'Content-Length: ' . strlen($data_string) . "\r\n"))))
             );
-            echo $result;
+            header('Location: http://localhost/LPProd/index.php');
         }
         else {
             $data = array("pseudo" => $_POST['pseudo'], "mdp" => $_POST['mdp'] ,"email" => $_POST['email'] );

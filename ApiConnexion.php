@@ -60,18 +60,11 @@ switch ($http_method) {
         $mdp = $data->mdp;
         $email = $data->email;
         
-        $query = "select max(idutilisateur) from utilisateur";
+
+        $query = "INSERT INTO utilisateur VALUES (1004,'$pseudo','$mdp','$email')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
        // oci_commit($bdd);
-        $test = $repBdd->fetch();
-        $repBdd->closeCursor();
-        $test = $test[0]+1;
-
-        $query = "INSERT INTO `utilisateur` VALUES ($test,'$pseudo','$mdp','$email')";
-        $repBdd = $bdd->prepare($query);
-        $repBdd->execute();
-        //oci_commit($bdd);
         $result = $repBdd->fetch();
         $repBdd->closeCursor();
         if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
@@ -95,12 +88,12 @@ switch ($http_method) {
         $mdpinit = '';
         $emailinit = '';
 
-        $query = "select * from `utilisateur` WHERE pseudo = '$pseudo'";
+        $query = "select * from utilisateur WHERE pseudo = '$pseudo'";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
         $records = $repBdd->fetch();
         $repBdd->closeCursor();
-        $query = "UPDATE `utilisateur` SET `motdepasse`='$mdp',`mail`='$email' WHERE pseudo = '$pseudo'";
+        $query = "UPDATE utilisateur SET `motdepasse`='$mdp',`mail`='$email' WHERE pseudo = '$pseudo'";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
         oci_commit($bdd);
@@ -123,7 +116,7 @@ switch ($http_method) {
             $pseudo = $_GET['pseudo'];
             $mdp = $_GET['mdp'];
             
-            $query = "DELETE from `utilisateur` where pseudo='$pseudo' and motdepasse ='$mdp'";
+            $query = "DELETE from utilisateur where pseudo='$pseudo' and motdepasse ='$mdp'";
             $repBdd = $bdd->prepare($query);
             $repBdd->execute();
             $repBdd->closeCursor();
