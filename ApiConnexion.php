@@ -60,25 +60,37 @@ switch ($http_method) {
         $mdp = $data->mdp;
         $email = $data->email;
 
-        $query = "select max(idutilisateur) from utilisateur";
-        $repBdd = $bdd->prepare($query);
-        $repBdd->execute();
-       // oci_commit($bdd);
-        $test = $repBdd->fetch();
-        $repBdd->closeCursor();
-        $machin=$test[0]+1;
+        $verifUser = "select * from utilisateur where pseudo ='$pseudo' ";
+        $repVerif = $bdd->prepare($verifUser);
+        $repVerif->execute();
+        $verif = $repVerif->fetch();
+        $repVerif->closeCursor();
 
-        $query = "INSERT INTO utilisateur VALUES ($machin,'$pseudo','$email','$mdp')";
-        $repBdd = $bdd->prepare($query);
-        $repBdd->execute();
-       // oci_commit($bdd);
-        $repBdd->closeCursor();
-       // if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
-        //    deliver_response(400, "Nom d'utilisateur deja present", $data);
-        //} else {
-            /// Envoi de la réponse au Client
+        if($verif == false){
+            $query = "select max(idutilisateur) from utilisateur";
+            $repBdd = $bdd->prepare($query);
+            $repBdd->execute();
+        // oci_commit($bdd);
+            $test = $repBdd->fetch();
+            $repBdd->closeCursor();
+            $machin=$test[0]+1;
+
+            $query = "INSERT INTO utilisateur VALUES ($machin,'$pseudo','$email','$mdp')";
+            $repBdd = $bdd->prepare($query);
+            $repBdd->execute();
+        // oci_commit($bdd);
+            $repBdd->closeCursor();
+        // if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
+            //    deliver_response(400, "Nom d'utilisateur deja present", $data);
+            //} else {
+                /// Envoi de la réponse au Client
             $_session['idUtilisateur'] = $machin;
             deliver_response(201, "Inscription OK", $machin );
+        }else{
+            header('Location: http://localhost/LPProd/index.php');
+        }
+
+        
         //}
         break;
         /// Cas de la méthode PUT
