@@ -68,10 +68,10 @@ switch ($http_method) {
         $repBdd->closeCursor();
         $test = $test[0]+1;
 
-        $query = "INSERT INTO `utilisateur` VALUES ('$test','$pseudo','$mdp','$email')";
+        $query = "INSERT INTO `utilisateur` VALUES ($test,'$pseudo','$mdp','$email')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
-        oci_commit($bdd);
+        //oci_commit($bdd);
         $result = $repBdd->fetch();
         $repBdd->closeCursor();
         if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
