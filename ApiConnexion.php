@@ -87,7 +87,8 @@ switch ($http_method) {
             $_session['idUtilisateur'] = $machin;
             deliver_response(201, "Inscription OK", $machin );
         }else{
-            header('Location: http://localhost/LPProd/index.php');
+            unset($_SESSION["idUtilisateur"]);
+            deliver_response(400, "Ce login existe déjà !",false);
         }
 
         

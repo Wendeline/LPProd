@@ -47,8 +47,15 @@ switch ($http_method) {
                             . 'Content-Length: ' . strlen($data_string) . "\r\n"))))
             );
             //echo $result;
-            $_SESSION["idUtilisateur"]=$result;
-            header('Location: http://localhost/LPProd/index.php');
+            if ($result == 'false'){
+                unset($_SESSION["idUtilisateur"]);
+                ?> <a class="retour" href="http://localhost/LPProd/index.php">Revenir au menu principal</a>
+                <br><br><?php
+                echo("Ce pseudo existe déjà veuillez nous en excuser.");
+            }else{
+                $_SESSION["idUtilisateur"]=$result;
+                header('Location: http://localhost/LPProd/index.php');
+            }
         }
         else {
             $data = array("pseudo" => $_POST['pseudo'], "mdp" => $_POST['mdp'] ,"email" => $_POST['email'] );
