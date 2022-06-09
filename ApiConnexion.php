@@ -73,13 +73,13 @@ switch ($http_method) {
         $repBdd->execute();
        // oci_commit($bdd);
         $repBdd->closeCursor();
-        if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
-            deliver_response(400, "Nom d'utilisateur deja present", $data);
-        } else {
+       // if ($result == "Duplicata du champ '$pseudo' pour la clef 'PRIMARY'") {
+        //    deliver_response(400, "Nom d'utilisateur deja present", $data);
+        //} else {
             /// Envoi de la réponse au Client
             $_session['idUtilisateur'] = $machin;
-            deliver_response(201, "Inscription OK", $data );
-        }
+            deliver_response(201, "Inscription OK", $machin );
+        //}
         break;
         /// Cas de la méthode PUT
     case "PUT" :

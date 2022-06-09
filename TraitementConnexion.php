@@ -47,6 +47,7 @@ switch ($http_method) {
                             . 'Content-Length: ' . strlen($data_string) . "\r\n"))))
             );
             //echo $result;
+            $_SESSION["idUtilisateur"]=$result;
             header('Location: http://localhost/LPProd/index.php');
         }
         else {
