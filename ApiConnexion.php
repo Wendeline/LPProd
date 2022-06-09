@@ -59,8 +59,15 @@ switch ($http_method) {
         $pseudo = $data->pseudo;
         $mdp = $data->mdp;
         $email = $data->email;
+        
+        $query = "select max(idutilisateur) from utilisateur;";
+        $repBdd = $bdd->prepare($query);
+        $repBdd->execute();
+       // oci_commit($bdd);
+        $test = $repBdd->fetch();
+        $repBdd->closeCursor();
 
-        $query = "INSERT INTO `utilisateur`(pseudo,motdepasse,mail) VALUES ('$pseudo','$mdp','$email')";
+        $query = "INSERT INTO `utilisateur` VALUES ('1002','$pseudo','$mdp','$email')";
         $repBdd = $bdd->prepare($query);
         $repBdd->execute();
         oci_commit($bdd);
@@ -70,7 +77,7 @@ switch ($http_method) {
             deliver_response(400, "Nom d'utilisateur deja present", $data);
         } else {
             /// Envoi de la réponse au Client
-            deliver_response(201, "Inscription OK", $data);
+            deliver_response(201, "Inscription OK", $data );
         }
         break;
         /// Cas de la méthode PUT

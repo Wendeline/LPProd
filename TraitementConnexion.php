@@ -13,7 +13,12 @@ switch ($http_method) {
             $result = file_get_contents("http://localhost/LPProd/ApiConnexion.php?pseudo=$pseudo&mdp=$mdp",
             false, stream_context_create(array('http' => array('method' => 'GET'))) //Changer par DELETE si besoin
             );
-            $_SESSION['idUtilisateur']= str_replace('"','',$result);
+            echo $result;
+            if ($result =='false'){
+
+            }else{
+                $_SESSION['idUtilisateur']= str_replace('"','',$result);
+            }
             header('Location: http://localhost/LPProd/index.php');
             exit();
         }else {
@@ -41,6 +46,7 @@ switch ($http_method) {
                         'header' => array('Content-Type: application/json' . "\r\n"
                             . 'Content-Length: ' . strlen($data_string) . "\r\n"))))
             );
+            echo $result;
         }
         else {
             $data = array("pseudo" => $_POST['pseudo'], "mdp" => $_POST['mdp'] ,"email" => $_POST['email'] );

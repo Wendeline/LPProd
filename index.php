@@ -36,7 +36,7 @@ include('mylib.php');
             <label class="form-label"> Mot de passe:</label> <input type="password" size="50" name="mdp" class="form-control" /></br>
             <input name="_method" type="hidden" value="GET"  />
             <input type="submit" value="Valider" class="btn btn-primary" /> </p>
-            <p> Mot de passe oublié </p> <!-- à coder plus tard, ça sera un lien vers un formulaire qui dde le mail et envoie donc un mail -->
+           <!-- <! --<p> Mot de passe oublié </p> à coder plus tard, ça sera un lien vers un formulaire qui dde le mail et envoie donc un mail -->
         </form>
       </div>
       <div class="sinscrire">
@@ -50,7 +50,7 @@ include('mylib.php');
         </form>
       </div>
 
-      <?php }else{ ?>
+      <?php }else{  echo$_SESSION['idUtilisateur']?>
 
         <div>
           <form class="deco-btn" action="deconnexion.php" method="POST" >
